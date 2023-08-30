@@ -1,0 +1,67 @@
+[gd_scene load_steps=7 format=3 uid="uid://b6c05gwiy03eq"]
+
+[ext_resource type="Texture2D" uid="uid://cbyl25ok2pa2n" path="res://assets/turtle.png" id="1_8e5ae"]
+[ext_resource type="Script" path="res://scenes/turtle.gd" id="1_32ryb"]
+
+[sub_resource type="Animation" id="Animation_ysipp"]
+resource_name = "waking_up"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+
+[sub_resource type="Animation" id="Animation_ut3ta"]
+resource_name = "walk"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [3, 4, 5, 6]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8750t"]
+_data = {
+"waking_up": SubResource("Animation_ysipp"),
+"walk": SubResource("Animation_ut3ta")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_w7ocf"]
+size = Vector2(26, 15)
+
+[node name="Turtle" type="CharacterBody2D"]
+texture_filter = 1
+scale = Vector2(4, 4)
+script = ExtResource("1_32ryb")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_8e5ae")
+hframes = 4
+vframes = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_8750t")
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_w7ocf")
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
